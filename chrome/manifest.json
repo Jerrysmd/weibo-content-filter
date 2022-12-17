@@ -1,8 +1,8 @@
 {
 	"name": "眼不见心不烦（新浪微博）",
 	"short_name": "眼不见心不烦",
-	"version": "${FULLVER}",
-	"manifest_version": 2,
+	"version": "1",
+	"manifest_version": 3,
 	"minimum_chrome_version": "20",
 	"description": "新浪微博（weibo.com）非官方功能增强插件，可以无限制地屏蔽关键词、用户、来源，去除页面广告和推广微博，恢复双栏版式，反版聊、反刷屏，还您一个清爽干净的微博！",
 	"icons": {
@@ -12,21 +12,18 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"http://weibo.com/*",
-				"http://www.weibo.com/*"
+				"https://weibo.com/*",
+				"https://www.weibo.com/*"
 			],
-			"js": [
-				"main.js"
-			],
+			"js": ["main.js"],
 			"run_at": "document_end"
 		}
 	],
-	"web_accessible_resources": [
-		"weiboFilter.js"
-	],	
+	"web_accessible_resources": [{
+		"resources": ["weiboFilter.js"],
+		"matches": ["<all_urls>"]
+	}],	
 	"permissions": [
-		"storage",
-		"http://weibo.com/*",
-		"http://www.weibo.com/*"
+		"storage"
 	]
 }

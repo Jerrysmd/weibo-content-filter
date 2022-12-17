@@ -6,7 +6,7 @@ var $ = (function () {
 	var $ = function (id) {
 		return document.getElementById(id);
 	};
-	$.version = Number('${REV}');
+	$.version = Number('91');
 	// 按CSS选择元素
 	$.select = function (css) {
 		return document.querySelector(css);
@@ -16,14 +16,14 @@ var $ = (function () {
 	if (window.chrome) {
 		if (localStorage.getItem(CHROME_KEY_ROOT + 'chromeExtInstalled')) {
 			console.warn('已安装插件版本，脚本停止运行！');
-			return undefined; // 如果已经（曾经）安装过插件则不再继续运行脚本
+			// return undefined; // 如果已经（曾经）安装过插件则不再继续运行脚本
 		}
 		var version = window.navigator.userAgent.match(/Chrome\/(\d+)/) && RegExp.$1;
 		if (version === null || version >= 27) {
 			// Chrome 27开始不再支持通过脚本注入方式获取unsafeWindow，也不再提供unsafeWindow符号
 			if (typeof unsafeWindow === 'undefined') {
 				console.warn('不支持Chrome ' + version + '，脚本停止运行！');
-				return undefined;
+				// return undefined;
 			} else {
 				// Chrome 26以上仍然可以通过Tampermonkey获得unsafeWindow
 				console.warn('使用第三方扩展提供的unsafeWindow');
@@ -39,7 +39,7 @@ var $ = (function () {
 			})();
 		}
 	} else if (typeof unsafeWindow === 'undefined') {
-		alert('当前版本的“眼不见心不烦”(v${VER})不支持您使用的浏览器。\n\n插件目前只对Firefox和Chrome浏览器提供官方支持。');
+		alert('当前版本的“眼不见心不烦”1.1.12不支持您使用的浏览器。\n\n插件目前只对Firefox和Chrome浏览器提供官方支持。');
 		return undefined;
 	} else {
 		$.window = unsafeWindow;
@@ -65,30 +65,30 @@ var $ = (function () {
 	}
 	$.oid = $.config.oid; // 页面uid（个人主页或单条微博的uid）
 	//#if GREASEMONKEY
-	if (!GM_getValue || (GM_getValue.toString && GM_getValue.toString().indexOf("not supported") > -1)) {
-		$.get = function (name, defVal, callback) {
-			var result = localStorage.getItem(CHROME_KEY_ROOT + name);
-			if (result === null) { result = defVal; }
-			if (typeof callback === 'function') {
-				callback(result);
-			} else {
-				return result;
-			}
-		};
-		$.set = function (name, value) {
-			localStorage.setItem(CHROME_KEY_ROOT + name, value);
-		};
-	} else {
-		$.get = function (name, defVal, callback) {
-			var result = GM_getValue(name, defVal);
-			if (typeof callback === 'function') {
-				callback(result);
-			} else {
-				return result;
-			}
-		};
-		$.set = GM_setValue;
-	}
+	// if (!GM_getValue || (GM_getValue.toString && GM_getValue.toString().indexOf("not supported") > -1)) {
+	// 	$.get = function (name, defVal, callback) {
+	// 		var result = localStorage.getItem(CHROME_KEY_ROOT + name);
+	// 		if (result === null) { result = defVal; }
+	// 		if (typeof callback === 'function') {
+	// 			callback(result);
+	// 		} else {
+	// 			return result;
+	// 		}
+	// 	};
+	// 	$.set = function (name, value) {
+	// 		localStorage.setItem(CHROME_KEY_ROOT + name, value);
+	// 	};
+	// } else {
+	// 	$.get = function (name, defVal, callback) {
+	// 		var result = GM_getValue(name, defVal);
+	// 		if (typeof callback === 'function') {
+	// 			callback(result);
+	// 		} else {
+	// 			return result;
+	// 		}
+	// 	};
+	// 	$.set = GM_setValue;
+	// }
 	//#elseif CHROME
 	var callbacks = {}, messageID = 0;
 	document.addEventListener('wbpPost', function (event) {
@@ -137,12 +137,14 @@ var $ = (function () {
 	return $;
 })();
 
-if (!$) { return false; }
+if (!$) { 
+	console.warn("!$ return false")
+	return false; }
 
 // == LEGACY CODE START ==
 // 如果正在运行旧版微博则停止运行并显示提示
 if ($.config.any && $.config.any.indexOf('wvr=5') === -1) {
-	if (confirm('您使用的“眼不见心不烦”版本(v${VER})不支持旧版微博。\n请升级到新版微博（V5），或使用较低版本（v1.0.6）的“眼不见心不烦”插件。\n如果您希望安装旧版“眼不见心不烦”，请点击“确认”。')) {
+	if (confirm('您使用的“眼不见心不烦”版本不支持旧版微博。\n请升级到新版微博（V5），或使用较低版本（v1.0.6）的“眼不见心不烦”插件。\n如果您希望安装旧版“眼不见心不烦”，请点击“确认”。')) {
 		window.open('http://code.google.com/p/weibo-content-filter/downloads/list', '_blank');
 	}
 	return false;
@@ -478,9 +480,9 @@ var $dialog = (function () {
 			console.warn('页面尚未载入完成，无法打开设置页面！');
 			return false;
 		}
-		var HTML = '${HTML}', events;
+		var HTML = 'settings.html', events;
 		dialog = STK.ui.dialog({isHold: true});
-		dialog.setTitle('“眼不见心不烦”(v${VER})设置');
+		dialog.setTitle('“眼不见心不烦”1.1.12设置');
 		// 首页与主页API不一致
 		if (dialog.getDom) {
 			content = STK.ui.mod.layer(HTML);
@@ -964,7 +966,9 @@ var $page = (function () {
 	var showSettingsBtn = function () {
 		if (!$('wbpShowSettings')) {
 			var groups = $.select('ul.sort') || $.select('ul.sort_profile');
-			if (!groups) { return false; }
+			if (!groups) {
+				console.warn("!groups return false") 
+				return false; }
 			var tab = document.createElement('li');
 			tab.id = 'wbpShowSettings';
 			tab.className = 'item';
@@ -1382,7 +1386,7 @@ var $page = (function () {
 	var myStyles = document.createElement('style');
 	myStyles.type = 'text/css';
 	myStyles.id = 'wbpDialogStyles';
-	myStyles.innerHTML = '${CSS}';
+	myStyles.innerHTML = 'settings.css';
 	document.head.appendChild(myStyles);
 	// 为右边栏动态模块打屏蔽标记
 	tagRightbarMods($('trustPagelet_indexright_recom'));
@@ -1498,7 +1502,7 @@ $.get($.uid.toString(), undefined, function (options) {
 	} else if (options && $options.version < $.version) {
 		$options.save(true); // 更新版本信息
 		if ($options.updateNotify) {
-			alert('您已更新到“眼不见心不烦”v${VER}：\n\n- ' + '${FEATURES}'.split('；').join('\n- '));
+			alert('您已更新到“眼不见心不烦”1.1.12：\n\n- ' + '增加对天猫链接的屏蔽；增加对2014世界杯国旗标识的屏蔽'.split('；').join('\n- '));
 		}
 	}
 	//#if CHROME
