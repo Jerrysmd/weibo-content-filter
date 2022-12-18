@@ -1,27 +1,21 @@
 // 借助自定义事件实现page script（注入页面的主程序）与content script（运行在沙箱中）
-//   之间的异步通讯，使前者可以间接调用chrome.* API
+//   之间的异步通讯，使前者可以间接调用chrome.* API和GM_* API
+console.log('I am in weiboFilter.js');
 document.addEventListener('wbpGet', function (event) {
 	event.stopPropagation();
 	var name = event.detail.name;
 	var post = function (value) {
-		//#if DEBUG
-		console.log('Data read from storage:', value);
-		//#endif
 		// 注意：不能在此处直接调用callback，否则回调函数将在本程序所在的沙箱环境中运行，在Chrome 27及更高版本下会出错
-		document.dispatchEvent(new CustomEvent("wbpPost", { detail: {
-			value : value,
-			id : event.detail.id
-		}}));
+		// 在Greasemonkey（Firefox扩展）环境下也不能通过detail直接传对象，只能送string或array
+		// 详见https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Specification
+		document.dispatchEvent(new CustomEvent('wbpPost', { detail: event.detail.id + '=' + (value || '') }));
 	};
 	if (event.detail.sync) {
 		// 一次性读取所有设置
 		chrome.storage.sync.get(null, function (items) {
-			//#if DEBUG
-			console.log('Items in sync storage:', items);
-			//#endif
 			var i = 0, value = '';
 			while ((name + '_' + i) in items) {
-				value += items[name + '_' + (i++)]; 
+				value += items[name + '_' + (i++)];
 			}
 			post(i ? value : event.detail.defVal);
 		});
@@ -61,9 +55,6 @@ document.addEventListener('wbpSet', function (event) {
 				if (l >= partLength) { data[name + '_' + (i++)] = s; l = 0; s = ''; }
 			}
 			if (l > 0) { data[name + '_' + (i++)] = s; }
-			//#if DEBUG
-			console.log('Writing to sync storage:', data);
-			//#endif
 			// 保存新的设置
 			chrome.storage.sync.set(data, errorHandler);
 			// 清除多余的旧设置块
@@ -74,19 +65,7 @@ document.addEventListener('wbpSet', function (event) {
 			chrome.storage.sync.remove(keys, errorHandler);
 		});
 	} else { // 将设置保存到本地存储
-		//#if DEBUG
-		console.log('Writing to local storage:', data);
-		//#endif
 		chrome.storage.local.set(data);
-	}
-});
-//#if DEBUG
-document.addEventListener('wbpDebug', function (event) {
-	event.stopPropagation();
-	try {
-		console.log(eval('(function(){' + event.detail.snippet + '})();'));
-	} catch (err) {
-		console.error(err);
 	}
 });
 //#endif

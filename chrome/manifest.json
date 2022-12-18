@@ -1,5 +1,5 @@
 {
-	"name": "眼不见心不烦（新浪微博）",
+	"name": "眼不见心不烦（新浪微博）mytest",
 	"short_name": "眼不见心不烦",
 	"version": "1",
 	"manifest_version": 3,
@@ -13,7 +13,11 @@
 		{
 			"matches": [
 				"https://weibo.com/*",
-				"https://www.weibo.com/*"
+				"https://www.weibo.com/*",
+				"http://d.weibo.com/*",
+				"http://weibo.com/*",
+				"http://www.weibo.com/*",
+				"https://d.weibo.com/*"
 			],
 			"js": ["main.js"],
 			"run_at": "document_end"
