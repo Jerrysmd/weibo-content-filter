@@ -734,11 +734,15 @@
 				// }
 				return false;
 			})()) {
-				feed.style.display = 'none'; // 直接隐藏，不显示屏蔽提示
+				// feed.style.display = 'none'; // 直接隐藏，不显示屏蔽提示
 				feed.style.background = 'red';
 				feed.style.color = 'red';
 				return true;
-			} else { // 灰名单条件
+			} else {
+				// feed.style.display = '';
+				feed.style.background = 'green';
+				feed.style.color = 'green';
+				// 灰名单条件
 				// 搜索来源灰名单
 				var sourceKeyword = searchSource(source, 'sourceGrayKeywords'),
 					keyword = search(text, 'grayKeywords');
@@ -790,13 +794,13 @@
 			return false;
 		};
 		// 过滤所有微博
-		var applyToAll = function () {
-			// 过滤所有微博
-			if ($.scope()) {
-				forwardFeeds = {}; floodFeeds = {};
-				Array.prototype.forEach.call(document.querySelectorAll('.WB_feed_type'), apply);
-			}
-		};
+		// var applyToAll = function () {
+		// 	// 过滤所有微博
+		// 	if ($.scope()) {
+		// 		forwardFeeds = {}; floodFeeds = {};
+		// 		Array.prototype.forEach.call(document.querySelectorAll('.WB_feed_type'), apply);
+		// 	}
+		// };
 		// 屏蔽提示相关事件的冒泡处理
 		var bindTipOnClick = function (node) {
 			if (!node) { return; }
@@ -844,6 +848,17 @@
 				event.stopPropagation();
 			}
 		}, true);
+
+		// const observer = new MutationObserver(function(mutations) {
+		// 	mutations.forEach(function(mutation) {
+		// 	  apply(document.querySelector('#scroller > div.vue-recycle-scroller__item-wrapper'));
+		// 	});
+		//   });
+		  
+		//   const targetNode = document.querySelector('#scroller > div.vue-recycle-scroller__item-wrapper');
+		//   observer.observe(targetNode, { attributes: true, childList: true, characterData: true });
+		  
+
 		// 使用事件捕捉以尽早触发事件，避免与新浪自带事件撞车
 		document.addEventListener('DOMNodeInserted', function (event) {
 			var node = event.target;
@@ -851,10 +866,22 @@
 			if ($.scope() === 0 || node.tagName !== 'DIV') { return; }
 			console.log("node.classList: " + node.classList)
 			// if(node.classList.contains('head-info_authtag_29zK2')){return true;}
-			if (node.classList.contains('WB_feed_type') || node.classList.contains('vue-recycle-scroller__item-view')) {
-				// 处理动态载入的微博
-				apply(node);
-			}
+			// if (node.classList.contains('WB_feed_type') || node.classList.contains('vue-recycle-scroller__item-view')) {
+			// 	// 处理动态载入的微博
+			// 	apply(node);
+			// }
+
+			// document.querySelector('#scroller > div.vue-recycle-scroller__item-wrapper')
+			// apply(document.querySelector('#scroller > div.vue-recycle-scroller__item-wrapper > div:nth-child(1)'));
+
+			document.querySelectorAll('#scroller > div.vue-recycle-scroller__item-wrapper > div').forEach(function (div) {
+				//console.log(div);
+				if(div.querySelectorAll('i[title="负反馈"').length > 0){
+					div.style.background = 'red';
+				}else{
+					div.style.background = '';
+				}
+			});
 			//  else if (node.classList.contains('W_loading')) {
 			// 	var requestType = node.getAttribute('requesttype');
 			// 	// 仅在搜索和翻页时需要初始化反刷屏/反版聊记录

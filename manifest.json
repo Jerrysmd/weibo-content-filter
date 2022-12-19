@@ -1,10 +1,9 @@
 {
-	"name": "眼不见心不烦（新浪微博）mytest",
-	"short_name": "眼不见心不烦",
-	"version": "1",
+	"name": "大眼夹（新版微博）",
+	"short_name": "大眼夹",
+	"version": "0.1",
 	"manifest_version": 3,
-	"minimum_chrome_version": "20",
-	"description": "新浪微博（weibo.com）非官方功能增强插件，可以无限制地屏蔽关键词、用户、来源，去除页面广告和推广微博，恢复双栏版式，反版聊、反刷屏，还您一个清爽干净的微博！",
+	"description": "新版微博非官方插件，去除时间线上的推荐、推广和广告微博。",
 	"icons": {
 		"48": "weiboFilter.png",
 		"128": "weiboFilter.large.png"
@@ -14,17 +13,17 @@
 			"matches": [
 				"https://weibo.com/*",
 				"https://www.weibo.com/*",
+				"https://d.weibo.com/*",
 				"http://d.weibo.com/*",
 				"http://weibo.com/*",
-				"http://www.weibo.com/*",
-				"https://d.weibo.com/*"
+				"http://www.weibo.com/*"
 			],
 			"js": ["main.js"],
 			"run_at": "document_end"
 		}
 	],
 	"web_accessible_resources": [{
-		"resources": ["weiboFilter.js"],
+		"resources": ["weiboClean.js"],
 		"matches": ["<all_urls>"]
 	}],	
 	"permissions": [
