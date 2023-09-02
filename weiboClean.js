@@ -12,10 +12,16 @@ document.addEventListener('DOMNodeInserted', function (event) {
             ||
             targetContent === "推荐") {
             // div.style.display = 'none';
-            div.style.mixBlendMode = "color-dodge";
+            const body = div.querySelector("div.wbpro-feed-content")
+            body.style.display = 'none';
+            const footer = div.querySelector("footer")
+            footer.style.display = 'none';
         } else {
             // div.style.display = '';
-            div.style.mixBlendMode = "";
+            const body = div.querySelector("div.wbpro-feed-content")
+            body.style.display = '';
+            const footer = div.querySelector("footer")
+            footer.style.display = '';
         }
     });
 });
