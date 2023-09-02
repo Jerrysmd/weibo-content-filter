@@ -1,6 +1,6 @@
 document.addEventListener('DOMNodeInserted', function (event) {
     var node = event.target;
-    if (node.tagName !== 'DIV') { return; }
+    // if (node.tagName !== 'DIV') { return; }
     document.querySelectorAll('#scroller > div.vue-recycle-scroller__item-wrapper > div').forEach(function (div) {
         //console.log(div.querySelector('div.wbpro-auth-tag.head-info_authtag_29zK2'));
         // if(div.querySelectorAll('i[title="负反馈"').length > 0){
@@ -11,9 +11,11 @@ document.addEventListener('DOMNodeInserted', function (event) {
             targetContent === "热推"
             ||
             targetContent === "推荐") {
-            div.style.display = 'none';
+            // div.style.display = 'none';
+            div.style.mixBlendMode = "color-dodge";
         } else {
-            div.style.display = '';
+            // div.style.display = '';
+            div.style.mixBlendMode = "";
         }
     });
 });
