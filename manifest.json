@@ -5,8 +5,8 @@
 	"manifest_version": 3,
 	"description": "新版微博非官方插件，去除时间线上的推荐、推广和广告微博。",
 	"icons": {
-		"48": "weiboFilter.png",
-		"128": "weiboFilter.large.png"
+		"48": "images/weiboFilter.png",
+		"128": "images/weiboFilter.large.png"
 	},
 	"content_scripts": [
 		{
