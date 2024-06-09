@@ -23,7 +23,8 @@ const callback = async (mutationsList, observer) => {
                         (items.hotPush && targetContent.match(/^(热推)$/))
                         || (items.recommend && targetContent.match(/^(推荐)$/))
                         || (items.mediaRecommend && targetContent.match(/^(媒体推荐)$/))
-                        || (items.ad && div.querySelector('div[mark*="reallog_mark_ad"]') && !div.querySelector('div[mark*="999_reallog_mark_ad"]') && !targetContent.match(/^(热推)$/));
+                        || (items.ad && div.querySelector('div[mark*="reallog_mark_ad"]') && !div.querySelector('div[mark*="999_reallog_mark_ad"]') && !targetContent.match(/^(热推)$/))
+                        || (items.fansTop && (targetContent.match(/^(粉丝头条)$/) || div.querySelector('div[mark*="FansTop"]')));
                     const hasRepost = !!div.querySelector("div.Feed_retweet_JqZJb");
                     const displayValue = isPromotedPost ? 'none' : '';
                     if (hasRepost) {
@@ -57,7 +58,7 @@ const checkForTargetNode = () => {
         console.log('Observer started');
     } else {
         console.log('Target node not found, retrying...');
-        setTimeout(checkForTargetNode, 10);
+        setTimeout(checkForTargetNode, 1);
     }
 };
 
