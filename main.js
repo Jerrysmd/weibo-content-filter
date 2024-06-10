@@ -51,15 +51,5 @@ const config = {
     subtree: true
 };
 
-const checkForTargetNode = () => {
-    const targetNode = document.querySelector('#scroller');
-    if (targetNode) {
-        observer.observe(targetNode, config);
-        console.log('Observer started');
-    } else {
-        console.log('Target node not found, retrying...');
-        setTimeout(checkForTargetNode, 1);
-    }
-};
-
-window.addEventListener('load', checkForTargetNode);
+observer.observe(document, config);
+console.log('Observer started');
