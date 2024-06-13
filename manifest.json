@@ -1,32 +1,36 @@
 {
-	"name": "大眼夹（新版微博）",
-	"short_name": "大眼夹",
-	"version": "0.1",
-	"manifest_version": 3,
-	"description": "新版微博非官方插件，去除时间线上的推荐、推广和广告微博。",
-	"icons": {
-		"48": "images/weiboFilter.png",
-		"128": "images/weiboFilter.large.png"
-	},
-	"content_scripts": [
-		{
-			"matches": [
-				"https://weibo.com/*",
-				"https://www.weibo.com/*",
-				"https://d.weibo.com/*",
-				"http://d.weibo.com/*",
-				"http://weibo.com/*",
-				"http://www.weibo.com/*"
-			],
-			"js": ["main.js"],
-			"run_at": "document_end"
-		}
-	],
-	"web_accessible_resources": [{
-		"resources": ["weiboClean.js"],
-		"matches": ["<all_urls>"]
-	}],	
-	"permissions": [
-		"storage"
-	]
+  "name": "大眼夹（新版微博）",
+  "short_name": "大眼夹",
+  "version": "0.1",
+  "manifest_version": 3,
+  "description": "新版微博非官方插件，去除时间线上的推荐、推广和广告微博。",
+  "icons": {
+    "48": "images/weiboFilter.png",
+    "128": "images/weiboFilter.large.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://weibo.com/*",
+        "https://www.weibo.com/*",
+        "https://d.weibo.com/*",
+        "http://d.weibo.com/*",
+        "http://weibo.com/*",
+        "http://www.weibo.com/*"
+      ],
+      "js": [
+        "main.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
 }
