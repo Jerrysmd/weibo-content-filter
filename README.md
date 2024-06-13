@@ -26,7 +26,7 @@
 
 The following uses Chrome on Windows 11 as an example
 
-1. `Download` or `Clone` this repository `master bra` to your local
+1. `Download` or `Clone` this repository `master branch` to your local
 
 2. Go to `chrome://extensions/` in your chrome
 
